@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>GaiaEye</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Dancing+Script:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+  <div class="gaia-title" id="gaia-title">
+    <span class="gaia-text">Gaia</span><span class="eye-text">Eye</span>
+  </div>
+
+  <nav id="main-nav" class="main-nav">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#platform">Platform</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact Us</a>
+  </nav>
+
+  <div id="content-spacer" style="height: 100vh;"></div>
+
+  <div id="content" class="content-section">
+    <h1></h1>
+    <p> </p>
+
+    <!-- New Scroll Text Container -->
+    <div id="scroll-text-container" class="scroll-text-container" style="flex-direction: column;">
+      <div id="line1" class="typewriter-line">They didn’t solve a problem…</div>
+      <div id="line2" class="typewriter-line">they used eyes that see what others cannot,</div>
+      <div id="line3" class="typewriter-line">to understand the Earth</div>
+    </div>
+
+    <!-- Space for scrolling -->
+    <div style="height: 200px;"></div>
+  </div>
+
+  <!-- Scroll Driven Image Section -->
+  <div id="image-scroll-section" style="height: 300vh; position: relative; background-color: #000;">
+    <div id="sticky-image-wrapper"
+      style="position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #000;">
+      <!-- Using a placeholder image from the project -->
+      <img id="expanding-image" src="images/earthcloudmap1.jpg" alt="Expanding Earth"
+        style="width: 30%; height: auto; border-radius: 20px; box-shadow: 0 0 50px rgba(255,255,255,0.1); transition: transform 0.1s linear, width 0.1s linear, height 0.1s linear, border-radius 0.1s linear;">
+    </div>
+  </div>
+
+  <!-- Final White Section -->
+  <div id="white-content-section"
+    style="background-color: white; color: black; padding: 100px 20px; min-height: 100vh; position: relative; z-index: 100;">
+    <div style="max-width: 800px; margin: 0 auto; text-align: center; font-family: 'Segoe UI', sans-serif;">
+      <h2 style="font-family: 'Orbitron', sans-serif; font-size: 3rem; margin-bottom: 2rem; color: #000;">The Future is
+        Here</h2>
+      <p style="font-size: 1.2rem; line-height: 1.8; color: #333;">
+        Seamlessly integrating satellite data with advanced AI models, GaiaEye provides unprecedented insights into our
+        planet's changing climate and ecosystems. From urban planning to disaster response, our technology creates a
+        digital twin of Earth that empowers decision-makers globally.
+      </p>
+      <button
+        style="margin-top: 50px; padding: 15px 40px; font-size: 1rem; background: #000; color: #fff; border: none; cursor: pointer; font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; transition: transform 0.2s;">
+        Discover More
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r69/three.min.js"></script>
+  <script src="scripts/threex.atmospherematerial.js"></script>
+  <!-- Stats.js removed -->
+  <script src="scripts/trackball-controls.js"></script>
+  <script src="scripts/axes.js"></script>
+  <script src="scripts/main.js"></script>
+
+  <script>
+    // Scroll Animation Logic
+    window.addEventListener('scroll', () => {
+      const title = document.getElementById('gaia-title');
+      const nav = document.getElementById('main-nav');
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // --- Header Transition Logic ---
+      const threshold = windowHeight * 0.8;
+
+      if (scrollY > threshold) {
+        title.classList.add('nav-state');
+        nav.classList.add('visible');
+        title.style.top = '';
+        title.style.transform = '';
+      } else {
+        title.classList.remove('nav-state');
+        nav.classList.remove('visible');
+        title.style.top = '';
+        title.style.transform = '';
+      }
+
+      // --- Animated Text Gradient Logic ---
+      const textElement = document.getElementById('gradient-text');
+      const textContainer = document.getElementById('scroll-text-container');
+
+      if (textContainer) {
+        const rect = textContainer.getBoundingClientRect();
+        const elementHeight = textContainer.offsetHeight;
+
+        // Calculate visibility progress relative to viewport center
+        const viewCenter = windowHeight / 2;
+        const elementCenter = rect.top + elementHeight / 2;
+
+        // Distance from center
+        const distance = viewCenter - elementCenter;
+        const range = 400; // Effect range
+
+        // Define progress here
+        let progress = (distance + range) / (range * 2);
+        progress = Math.max(0, Math.min(1, progress)); // Clamp 0 to 1
+
+        // Check if container is visible
+        if (progress > 0.2) {
+          const lines = document.querySelectorAll('.typewriter-line');
+          if (lines.length > 0 && !lines[0].classList.contains('typing-active') && !lines[0].classList.contains('typing-done')) {
+
+            // Sequence Animation
+            const animateLine = (index) => {
+              if (index >= lines.length) return;
+
+              const line = lines[index];
+              line.classList.add('typing-active');
+
+              // Animation duration is approx 2s in CSS
+              setTimeout(() => {
+                line.classList.remove('typing-active');
+                line.classList.add('typing-done'); // Keep it visible without cursor
+
+                // Trigger next
+                animateLine(index + 1);
+              }, 2000); // 2 seconds per line
+            };
+
+            // Start sequence
+            animateLine(0);
+          }
+        }
+      }
+
+      // --- Expanding Image Logic ---
+      // Fix Syntax: removed extra closing brackets/bad nesting from previous step
+      const imgSection = document.getElementById('image-scroll-section');
+      const imgElement = document.getElementById('expanding-image');
+
+      if (imgSection && imgElement) {
+        const rect = imgSection.getBoundingClientRect();
+        // Since wrapper is sticky, rect.top within the viewport determines scroll progress relative to the section start
+        // Actually, rect.top is position relative to viewport. 
+        // When section hits top (rect.top <= 0), we start animating.
+
+        const scrollDistance = -rect.top;
+        const animationRange = windowHeight * 1.5; // Complete expansion after scrolling 1.5 screens
+
+        let imgProgress = scrollDistance / animationRange;
+        imgProgress = Math.max(0, Math.min(1, imgProgress));
+
+        if (imgProgress >= 0) {
+          // Width: 30% -> 100%
+          const width = 30 + (70 * imgProgress);
+          // Radius: 20px -> 0px
+          const radius = 20 - (20 * imgProgress);
+
+          imgElement.style.width = `${width}%`;
+          imgElement.style.borderRadius = `${radius}px`;
+
+          if (imgProgress >= 0.95) {
+            // Full screen mode
+            imgElement.style.height = '100vh';
+            imgElement.style.objectFit = 'cover';
+          } else {
+            imgElement.style.height = 'auto';
+            imgElement.style.objectFit = 'contain';
+          }
+        }
+      }
+    });
+  </script>
+
+  <!-- Scroll Driven Image Section inserted dynamically via script or just below content? -->
+  <!-- Mistake: I need to insert HTML structure BEFORE the script block ends or OUTSIDE it. -->
+  <!-- Let's fix the structure by closing the body correctly, but first I need to add the HTML elements I missed in the previous step due to target mismatch. -->
+</body>
+
+</html>

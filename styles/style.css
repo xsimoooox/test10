@@ -1,0 +1,308 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  /* Allow scrolling now */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Fix the canvas to the background so it stays put while scrolling */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Content styling */
+.content-section {
+  position: relative;
+  z-index: 20;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #050505 10%);
+  padding: 50px 20px;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.content-section h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: #0f9d58;
+  text-shadow: 0 0 10px rgba(15, 157, 88, 0.5);
+}
+
+.content-section p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  color: #ddd;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 0, 0.2);
+  padding: 2rem;
+  margin: 1rem auto;
+  max-width: 600px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+.card h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+}
+
+/* Gaia Eye Title - Default Hero State */
+.gaia-title {
+  position: fixed;
+  top: 15%;
+  /* Start at 15% from top */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Centered horizontally */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  /* Large Hero Size */
+  font-family: 'Orbitron', sans-serif;
+  font-size: 6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  z-index: 50;
+
+  transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Scrolled / Navbar State */
+.gaia-title.nav-state {
+  top: 20px !important;
+  left: 40px !important;
+  transform: translate(0, 0) !important;
+  font-size: 2rem;
+  /* Shrink to logo size */
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Navigation Menu */
+.main-nav {
+  position: fixed;
+  top: 25px;
+  /* Aligned with reduced logo */
+  left: 50%;
+  /* Center horizontally */
+  z-index: 50;
+  display: flex;
+  gap: 30px;
+  opacity: 0;
+  /* Hidden by default */
+  transform: translateX(-50%) translateY(-20px);
+  /* Center X and start Y offset */
+  transition: all 0.5s ease-out;
+  pointer-events: none;
+}
+
+.main-nav.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.main-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.main-nav a:hover {
+  color: #0f9d58;
+  text-shadow: 0 0 8px rgba(15, 157, 88, 0.6);
+}
+
+/* Background Blue Neon Atmosphere (Hero Only mostly) */
+.gaia-title::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 100, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+  z-index: -1;
+  filter: blur(25px);
+  opacity: 0;
+  animation: atmosphericFadeIn 2s ease-out 1s forwards;
+  transition: opacity 0.5s;
+}
+
+/* Hide atmosphere when in nav state */
+.gaia-title.nav-state::before {
+  opacity: 0;
+}
+
+.gaia-text {
+  display: inline-block;
+  color: #0f9d58;
+  text-shadow:
+    0 0 5px rgba(15, 157, 88, 0.8),
+    0 0 20px rgba(0, 100, 255, 0.6);
+
+  transform: translateX(-100vw);
+  animation: slideInLeft 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.eye-text {
+  display: inline-block;
+  color: #ffffff;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.9),
+    0 0 20px rgba(0, 100, 255, 0.6);
+
+  transform: translateX(100vw);
+  animation: slideInRight 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100vw);
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100vw);
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes atmosphericFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.8;
+  }
+}
+
+/* Scroll Text Container */
+.scroll-text-container {
+  height: 600px;
+  /* Space to scroll through */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+}
+
+/* Typewriter Lines */
+.typewriter-line {
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  /* Slightly smaller to fit lines */
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  overflow: hidden;
+  border-right: .15em solid transparent;
+  /* Cursor hidden initially */
+  white-space: nowrap;
+  margin: 10px auto;
+  letter-spacing: normal;
+  width: 0;
+  /* Start hidden */
+}
+
+/* Different widths for lines to make animation timing feel right? 
+   No, width: 100% and 'steps' handles it, but step count needs to match char count ideally.
+   For simplicity, we use a generic step count and width fit-content or max-width. */
+
+.typing-active {
+  animation: typing 2s steps(40, end) forwards, blink-caret .75s step-end infinite;
+  border-right-color: #fff;
+  /* Show cursor while typing */
+}
+
+/* Remove cursor after typing is done (optional, but requested 'like handwriting') */
+.typing-done {
+  border-right-color: transparent;
+  width: 100%;
+  /* Ensure it stays visible */
+}
+
+/* Animation Class to be added by JS */
+.typing-anim {
+  animation:
+    typing 4s steps(40, end) forwards,
+    blink-caret .75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0
+  }
+
+  to {
+    width: 100%
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+
+  from,
+  to {
+    border-color: transparent
+  }
+
+  50% {
+    border-color: #fff;
+  }
+}
